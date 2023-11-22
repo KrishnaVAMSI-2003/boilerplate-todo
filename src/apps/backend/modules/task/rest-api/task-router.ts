@@ -9,8 +9,8 @@ export default class TaskRouter {
 
     router.post('/', CreateTaskValidationSchema, TaskController.createTask);
     router.get('/', TaskController.getAllTasks);
-    router.get('/:id', TaskController.getTask);
-    router.delete('/:id', TaskController.deleteTask);
+    router.get('/:taskId', TaskController.getTask);
+    router.delete('/:taskId', TaskController.deleteTask);
 
     return router;
   }

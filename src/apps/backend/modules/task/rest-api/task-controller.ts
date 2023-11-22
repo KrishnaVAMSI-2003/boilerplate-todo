@@ -46,7 +46,7 @@ export default class TaskController {
     try {
       const params: DeleteTaskParams = {
         accountId: req.params.accountId,
-        taskId: req.params.id,
+        taskId: req.params.taskId,
       };
       await TaskService.deleteTask(params);
       res.status(204).send();
@@ -83,7 +83,7 @@ export default class TaskController {
     try {
       const params: GetTaskParams = {
         accountId: req.params.accountId,
-        taskId: req.params.id,
+        taskId: req.params.taskId,
       };
       const task = await TaskService.getTaskForAccount(params);
       res.status(200).send(TaskController.serializeTaskAsJSON(task));
