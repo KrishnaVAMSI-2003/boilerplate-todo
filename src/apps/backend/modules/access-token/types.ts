@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import AppError from '../error/app-error';
+import {check} from 'express-validator';
 
 export class AccessToken {
   accountId: string;
@@ -20,6 +21,14 @@ export enum AccessTokenErrorCode {
   AUTHORIZATION_HEADER_NOT_FOUND = 'ACCESS_TOKEN_ERR_03',
   INVALID_AUTHORIZATION_HEADER = 'ACCESS_TOKEN_ERR_04',
 }
+
+export const CreateAccessTokenParamsValidationSchema = [
+  check('username', 'Username is required').exists().isAlphanumeric().withMessage('Username must be alphanumeric')
+  .isLength({ min: 6, max: 20 }).withMessage('Username must be between 6 and 20 characters'),
+
+  check('password', 'Password is required').exists()
+  .trim().isLength({ min: 6, max: 20 }).withMessage('Password must be between 6 and 20 characters')
+]
 
 export class AccessTokenExpiredError extends AppError {
   code: AccessTokenErrorCode;
@@ -56,6 +65,16 @@ export class UnAuthorizedAccessError extends AppError {
 
   constructor() {
     super('This token is not authorized to access the given resource');
+    this.code = AccessTokenErrorCode.UNAUTHORIZED_ACCESS;
+    this.httpStatusCode = 401;
+  }
+}
+
+export class CreateAccessTokenParamsValidationError extends AppError {
+  code: AccessTokenErrorCode;
+
+  constructor(message: string) {
+    super(message);
     this.code = AccessTokenErrorCode.UNAUTHORIZED_ACCESS;
     this.httpStatusCode = 401;
   }

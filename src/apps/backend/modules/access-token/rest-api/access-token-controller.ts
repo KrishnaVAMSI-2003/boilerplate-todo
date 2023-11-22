@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 import AccessTokenService from '../access-token-service';
 import { AccessToken, CreateAccessTokenParams } from '../types';
@@ -10,6 +11,8 @@ export default class AccessTokenController {
     next: NextFunction,
   ): Promise<void> {
     try {
+      const errors = validationResult(req);
+      AccessTokenService.validateCreateAccessTokenParams(errors.array());
       const { username, password }: CreateAccessTokenParams = req.body as CreateAccessTokenParams;
       const params: CreateAccessTokenParams = { username, password };
       const accessToken = await AccessTokenService.createAccessToken(params);

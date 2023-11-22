@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import AppError from '../error/app-error';
+import { check } from 'express-validator'
 
 export class Account {
   id: string;
@@ -29,6 +30,16 @@ export enum AccountErrorCode {
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
 }
 
+export const CreateAccountParamsValidationSchema = [
+  check('username', 'Username is required').exists().isAlphanumeric().withMessage('Username must be alphanumeric')
+  .isLength({ min: 6, max: 20 }).withMessage('Username must be between 6 and 20 characters'),
+
+  check('email', 'Email is required').exists().isEmail().withMessage('Email must be valid'),
+
+  check('password', 'Password is required').exists()
+  .trim().isLength({ min: 6, max: 20 }).withMessage('Password must be between 6 and 20 characters')
+]
+
 export class AccountWithUserNameExistsError extends AppError {
   code: AccountErrorCode;
 
@@ -54,6 +65,16 @@ export class InvalidCredentialsError extends AppError {
 
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
+    this.code = AccountErrorCode.NOT_FOUND;
+    this.httpStatusCode = 401;
+  }
+}
+
+export class CreateAccountParamsValidationError extends AppError {
+  code: AccountErrorCode;
+
+  constructor(message: string) {
+    super(message);
     this.code = AccountErrorCode.NOT_FOUND;
     this.httpStatusCode = 401;
   }
