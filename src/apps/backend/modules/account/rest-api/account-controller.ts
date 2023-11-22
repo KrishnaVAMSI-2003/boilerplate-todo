@@ -10,8 +10,8 @@ export default class AccountController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { username, password }: CreateAccountParams = req.body as CreateAccountParams;
-      const params: CreateAccountParams = { username, password };
+      const { username, email, password }: CreateAccountParams = req.body as CreateAccountParams;
+      const params: CreateAccountParams = { username, email, password };
       const account = await AccountService.createAccount(params);
       res.status(201).send(AccountController.serializeAccountAsJSON(account));
     } catch (e) {

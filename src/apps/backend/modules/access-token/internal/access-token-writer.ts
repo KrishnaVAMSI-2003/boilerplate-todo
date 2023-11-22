@@ -27,12 +27,12 @@ export default class AccessTokenWriter {
     accessToken.accountId = account.id;
     accessToken.token = jwtToken;
 
-    const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
+    const verifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
       jwtToken,
       jwtSigningKey,
     ) as jsonwebtoken.JwtPayload;
 
-    accessToken.expiresAt = new Date(vetifiedToken.exp * 1000);
+    accessToken.expiresAt = new Date(verifiedToken.exp * 1000);
 
     return accessToken;
   }

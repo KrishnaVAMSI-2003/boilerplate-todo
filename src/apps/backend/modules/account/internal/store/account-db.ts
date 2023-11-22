@@ -4,6 +4,7 @@ export interface AccountDB {
   _id: Types.ObjectId;
   active: boolean;
   username: string;
+  email: string;
   hashedPassword: string;
 }
 
@@ -17,6 +18,12 @@ export const accountDbSchema: Schema = new Schema<AccountDB>(
       required: true,
       unique: true,
     },
+    email: {
+      type: String,
+      index: true,
+      required: true,
+      unique: true,
+    }
   },
   {
     timestamps: {

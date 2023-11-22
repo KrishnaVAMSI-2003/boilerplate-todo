@@ -6,21 +6,25 @@ export class Account {
 
   username: string;
 
+  email: string;
+
   hashedPassword: string;
 }
 
 export type CreateAccountParams = {
   username: string;
+  email: string;
   password: string;
 };
 
 export type AccountSearchParams = {
   username: string;
+  email?: string;
   password: string;
 };
 
 export enum AccountErrorCode {
-  USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
+  USERNAME_OR_EMAIL_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
 }
@@ -30,7 +34,7 @@ export class AccountWithUserNameExistsError extends AppError {
 
   constructor(username: string) {
     super(`An account with username ${username} already exists.`);
-    this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
+    this.code = AccountErrorCode.USERNAME_OR_EMAIL_ALREADY_EXISTS;
     this.httpStatusCode = 409;
   }
 }

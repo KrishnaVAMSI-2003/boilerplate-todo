@@ -9,6 +9,7 @@ export default class AccountUtil {
     const account = new Account();
     account.id = accountDb._id.toString();
     account.username = accountDb.username;
+    account.email = accountDb.email;
     account.hashedPassword = accountDb.hashedPassword;
     return account;
   }

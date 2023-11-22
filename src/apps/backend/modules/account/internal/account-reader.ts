@@ -37,13 +37,17 @@ export default class AccountReader {
     }
   }
 
-  public static async checkUsernameNotExists(
+  public static async checkUsernameOrEmailNotExists(
     params: AccountSearchParams,
   ): Promise<void> {
-    const dbAccount = await AccountRepository.accountDB.findOne({
+    const dbAccount = await AccountRepository.accountDB.findOne().or([{
       username: params.username,
       active: true,
-    });
+    },{
+      email: params.email,
+      active: true,
+    }]);
+
     if (dbAccount) {
       throw new AccountWithUserNameExistsError(params.username);
     }
