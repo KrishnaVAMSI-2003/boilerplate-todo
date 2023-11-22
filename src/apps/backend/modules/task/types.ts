@@ -1,12 +1,27 @@
 // eslint-disable-next-line max-classes-per-file
 import AppError from '../error/app-error';
+import { check } from 'express-validator';
+
+export enum TaskTypeEnum {
+  PERSONAL = "personal",
+  OFFICIAL = "official",
+  HOBBY = "hobby",  
+}
 
 export class Task {
   id: string;
 
-  account: string;
+  accountId: string;
 
-  name: string;
+  title: string;
+
+  description: string;
+
+  dueDate: Date;
+
+  taskType: TaskTypeEnum;
+
+  isCompleted: boolean;
 }
 
 export type GetAllTaskParams = {
@@ -27,7 +42,10 @@ export type GetTaskByNameParams = {
 
 export type CreateTaskParams = {
   accountId: string;
-  name: string;
+  title: string;
+  description: string;
+  dueDate: Date;
+  taskType: TaskTypeEnum;
 };
 
 export type DeleteTaskParams = {
@@ -44,7 +62,15 @@ export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
   UNAUTHORIZED_TASK_ACCESS = 'TASK_ERR_03',
+  INVALID_DETAILS = 'TASK_ERR_04',
 }
+
+export const CreateTaskValidationSchema = [
+  check('title', 'Title is required').exists(),
+  check('description', 'Description is required').exists(),
+  check('dueDate', 'Due date is required').exists(),
+  check('taskType', 'Task type is required').exists().isIn(Object.values(TaskTypeEnum)),
+]
 
 export class TaskWithNameExistsError extends AppError {
   code: TaskErrorCode;
@@ -74,4 +100,15 @@ export class TaskWithNameNotFoundError extends AppError {
     this.code = TaskErrorCode.NOT_FOUND;
     this.httpStatusCode = 404;
   }
+}
+
+export class CreateTaskValidationError extends AppError {
+  code : TaskErrorCode;
+
+  constructor(message: string) {
+    super(message);
+    this.code = TaskErrorCode.INVALID_DETAILS;
+    this.httpStatusCode = 400;
+  }
+
 }

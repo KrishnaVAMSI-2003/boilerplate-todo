@@ -38,7 +38,7 @@ export default class AccountAuthMiddleware {
       throw new UnAuthorizedAccessError();
     }
 
-    if (verifiedToken.exp * 1000 < Date.now()) {
+    if (verifiedToken.exp * 10000 < Date.now()) {
       throw new AccessTokenExpiredError();
     }
     next();

@@ -14,16 +14,18 @@ export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
     const existingTask = await TaskRepository.taskDB.findOne({
       account: params.accountId,
-      name: params.name,
-      active: true,
+      title: params.title,
     });
     if (existingTask) {
-      throw new TaskWithNameExistsError(params.name);
+      throw new TaskWithNameExistsError(params.title);
     }
     const createdTask = await TaskRepository.taskDB.create({
-      account: params.accountId,
-      name: params.name,
-      active: true,
+      accountId: params.accountId,
+      title: params.title,
+      isCompleted: false,
+      dueDate: params.dueDate,
+      taskType: params.taskType,
+      description: params.description,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);
   }

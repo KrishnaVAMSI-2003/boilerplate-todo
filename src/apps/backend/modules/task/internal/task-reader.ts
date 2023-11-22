@@ -15,8 +15,7 @@ export default class TaskReader {
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
     const task = await TaskRepository.taskDB.findOne({
       _id: params.taskId,
-      account: params.accountId,
-      active: true,
+      account: params.accountId
     });
     if (!task) {
       throw new TaskNotFoundError(params.taskId);

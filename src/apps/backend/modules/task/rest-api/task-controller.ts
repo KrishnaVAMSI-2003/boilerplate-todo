@@ -1,6 +1,7 @@
 import {
   NextFunction, Request, Response,
 } from 'express';
+import { validationResult } from 'express-validator';
 
 import TaskService from '../task-service';
 import {
@@ -9,6 +10,7 @@ import {
   GetAllTaskParams,
   DeleteTaskParams,
   GetTaskParams,
+  TaskTypeEnum,
 } from '../types';
 
 export default class TaskController {
@@ -18,9 +20,16 @@ export default class TaskController {
     next: NextFunction,
   ): Promise<void> {
     try {
+
+      const errors = validationResult(req);
+      TaskService.createTaskValidationResult(errors.array());
+
       const params: CreateTaskParams = {
         accountId: req.params.accountId,
-        name: req.body.name as string,
+        title: req.body.title as string,
+        description: req.body.description,
+        dueDate: req.body.dueDate as Date,
+        taskType: req.body.taskType as TaskTypeEnum
       };
       const task: Task = await TaskService.createTask(params);
       res.status(201).send(TaskController.serializeTaskAsJSON(task));
@@ -86,8 +95,8 @@ export default class TaskController {
   private static serializeTaskAsJSON(task: Task): unknown {
     return {
       id: task.id,
-      account: task.account,
-      name: task.name,
+      account: task.accountId,
+      title: task.title,
     };
   }
 }
