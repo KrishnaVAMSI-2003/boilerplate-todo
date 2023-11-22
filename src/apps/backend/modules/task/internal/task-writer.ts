@@ -3,7 +3,8 @@ import {
   DeleteTaskParams,
   GetTaskParams,
   Task,
-  TaskWithNameExistsError,
+  TaskWithTitleExistsError,
+  UpdateTaskParams,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -17,7 +18,7 @@ export default class TaskWriter {
       title: params.title,
     });
     if (existingTask) {
-      throw new TaskWithNameExistsError(params.title);
+      throw new TaskWithTitleExistsError(params.title);
     }
     const createdTask = await TaskRepository.taskDB.create({
       accountId: params.accountId,
@@ -28,6 +29,32 @@ export default class TaskWriter {
       description: params.description,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);
+  }
+
+  public static async updateTask(params: UpdateTaskParams): Promise<Task> {
+    const taskParams: GetTaskParams = {
+      accountId: params.accountId,
+      taskId: params.taskId,
+    };
+    const task = await TaskReader.getTaskForAccount(taskParams);
+    task.title = params.title;
+    task.description = params.description;
+    task.dueDate = params.dueDate;
+    task.taskType = params.taskType;
+    task.isCompleted = params.isCompleted;
+    const updatedTask = await TaskRepository.taskDB.findOneAndUpdate(
+      {
+        _id: task.id,
+      },
+      {
+        title: task.title,
+        description: task.description,
+        dueDate: task.dueDate,
+        taskType: task.taskType,
+        isCompleted: task.isCompleted,
+      }
+    );
+    return TaskUtil.convertTaskDBToTask(updatedTask);
   }
 
   public static async deleteTask(params: DeleteTaskParams): Promise<void> {

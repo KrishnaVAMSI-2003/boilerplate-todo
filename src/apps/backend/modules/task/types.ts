@@ -35,9 +35,9 @@ export type GetTaskParams = {
   taskId: string;
 };
 
-export type GetTaskByNameParams = {
+export type GetTaskByTitleParams = {
   accountId: string,
-  name: string;
+  title: string;
 };
 
 export type CreateTaskParams = {
@@ -52,6 +52,16 @@ export type DeleteTaskParams = {
   accountId: string;
   taskId: string;
 };
+
+export type UpdateTaskParams = {
+  accountId: string;
+  taskId: string;
+  title: string;
+  description: string;
+  dueDate: Date;
+  taskType: TaskTypeEnum;
+  isCompleted: boolean;
+}
 
 export type PaginationParams = {
   page: number;
@@ -72,11 +82,16 @@ export const CreateTaskValidationSchema = [
   check('taskType', 'Task type is required').exists().isIn(Object.values(TaskTypeEnum)),
 ]
 
-export class TaskWithNameExistsError extends AppError {
+export const UpdateTaskValidationSchema = [
+  ...CreateTaskValidationSchema,
+  check('isCompleted', 'isCompleted is required').exists().isBoolean(),
+]
+
+export class TaskWithTitleExistsError extends AppError {
   code: TaskErrorCode;
 
   constructor(name: string) {
-    super(`Task with name ${name} already exists.`);
+    super(`Task with title ${name} already exists.`);
     this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
     this.httpStatusCode = 409;
   }
@@ -92,11 +107,11 @@ export class TaskNotFoundError extends AppError {
   }
 }
 
-export class TaskWithNameNotFoundError extends AppError {
+export class TaskWithTitleNotFoundError extends AppError {
   code: TaskErrorCode;
 
   constructor(taskName: string) {
-    super(`Task with name ${taskName} not found.`);
+    super(`Task with title ${taskName} not found.`);
     this.code = TaskErrorCode.NOT_FOUND;
     this.httpStatusCode = 404;
   }
@@ -110,5 +125,10 @@ export class CreateTaskValidationError extends AppError {
     this.code = TaskErrorCode.INVALID_DETAILS;
     this.httpStatusCode = 400;
   }
+}
 
+export class UpdateTaskValidationError extends CreateTaskValidationError {
+  constructor(message: string) {
+    super(message);
+  }
 }

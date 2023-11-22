@@ -7,9 +7,11 @@ import {
   DeleteTaskParams,
   GetAllTaskParams,
   GetTaskParams,
-  GetTaskByNameParams,
+  GetTaskByTitleParams,
   Task,
   CreateTaskValidationError,
+  UpdateTaskValidationError,
+  UpdateTaskParams,
 } from './types';
 
 export default class TaskService {
@@ -32,11 +34,20 @@ export default class TaskService {
     return TaskReader.getTaskForAccount(params);
   }
 
-  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
-    return TaskReader.getTaskByNameForAccount(params);
+  public static async getTaskByTitleForAccount(params: GetTaskByTitleParams): Promise<Task> {
+    return TaskReader.getTaskByTitleForAccount(params);
   }
 
   public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
+  }
+
+  public static updateTaskValidationResult(errors: ValidationError[]) {
+    if(errors.length>0) {
+      throw new UpdateTaskValidationError(errors[0].msg);
+    }
+  }
+  public static async updateTask(params: UpdateTaskParams): Promise<Task> {
+    return TaskWriter.updateTask(params);
   }
 }

@@ -4,8 +4,8 @@ import {
   Task,
   TaskNotFoundError,
   PaginationParams,
-  GetTaskByNameParams,
-  TaskWithNameNotFoundError,
+  GetTaskByTitleParams,
+  TaskWithTitleNotFoundError,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -15,7 +15,7 @@ export default class TaskReader {
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
     const task = await TaskRepository.taskDB.findOne({
       _id: params.taskId,
-      account: params.accountId
+      accountId: params.accountId
     });
     if (!task) {
       throw new TaskNotFoundError(params.taskId);
@@ -23,14 +23,13 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(task);
   }
 
-  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
+  public static async getTaskByTitleForAccount(params: GetTaskByTitleParams): Promise<Task> {
     const task = await TaskRepository.taskDB.findOne({
-      account: params.accountId,
-      name: params.name,
-      active: true,
+      accountId: params.accountId,
+      title: params.title
     });
     if (!task) {
-      throw new TaskWithNameNotFoundError(params.name);
+      throw new TaskWithTitleNotFoundError(params.title);
     }
     return TaskUtil.convertTaskDBToTask(task);
   }
@@ -38,7 +37,7 @@ export default class TaskReader {
   public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task []> {
     const totalTasksCount = await TaskRepository.taskDB
       .countDocuments({
-        account: params.accountId,
+        accountId: params.accountId,
         active: true,
       });
     const paginationParams: PaginationParams = {
@@ -47,7 +46,7 @@ export default class TaskReader {
     };
     const startIndex = (paginationParams.page - 1) * (paginationParams.size);
     const tasks = await TaskRepository.taskDB
-      .find({ account: params.accountId, active: true })
+      .find({ accountId: params.accountId, active: true })
       .limit(paginationParams.size)
       .skip(startIndex);
     return tasks.map((task) => TaskUtil.convertTaskDBToTask(task));

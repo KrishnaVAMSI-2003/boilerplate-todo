@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import TaskController from './task-controller';
-import { CreateTaskValidationSchema } from '../types';
+import { CreateTaskValidationSchema, UpdateTaskValidationSchema } from '../types';
 
 export default class TaskRouter {
   public static getRoutes(): Router {
@@ -10,6 +10,7 @@ export default class TaskRouter {
     router.post('/', CreateTaskValidationSchema, TaskController.createTask);
     router.get('/', TaskController.getAllTasks);
     router.get('/:taskId', TaskController.getTask);
+    router.put('/:taskId', UpdateTaskValidationSchema, TaskController.updateTask);
     router.delete('/:taskId', TaskController.deleteTask);
 
     return router;

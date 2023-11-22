@@ -11,6 +11,7 @@ import {
   DeleteTaskParams,
   GetTaskParams,
   TaskTypeEnum,
+  UpdateTaskParams,
 } from '../types';
 
 export default class TaskController {
@@ -69,7 +70,7 @@ export default class TaskController {
         size,
       };
       const tasks = await TaskService.getTasksForAccount(params);
-      res.status(200).send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
+      res.status(200).json({tasks: [...tasks.map((task) => TaskController.serializeTaskAsJSON(task))]});
     } catch (e) {
       next(e);
     }
@@ -90,6 +91,31 @@ export default class TaskController {
     } catch (e) {
       next(e);
     }
+  }
+
+  public static async updateTask(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const errors = validationResult(req);
+      TaskService.updateTaskValidationResult(errors.array());
+      const params: UpdateTaskParams = {
+        accountId: req.params.accountId,
+        taskId: req.params.taskId,
+        title: req.body.title as string,
+        description: req.body.description,
+        dueDate: req.body.dueDate as Date,
+        taskType: req.body.taskType as TaskTypeEnum,
+        isCompleted: req.body.isCompleted as boolean,
+      };
+      const task = await TaskService.updateTask(params);
+      res.status(200).send(TaskController.serializeTaskAsJSON(task));
+    } catch (e) {
+      next(e);
+    }
+
   }
 
   private static serializeTaskAsJSON(task: Task): unknown {
