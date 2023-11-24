@@ -1,9 +1,10 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
-import { AccessService } from '../services';
+import { AccessService, SignupService } from '../services';
 
 type Deps = {
   accessService: AccessService,
+  signupService: SignupService,
 };
 
 const DepsContext = createContext<Deps | undefined>(undefined);
