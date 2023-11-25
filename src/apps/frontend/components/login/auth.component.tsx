@@ -6,13 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AuthComponent(): React.ReactElement {
   const navigate = useNavigate();
-  React.useEffect(() => {
-    if(localStorage.getItem('x-auth-token')) {
-      navigate('/home');
-    }
-  }, []);
-
-  const { accessService, signupService } = useDeps();
+  const { accessService, signupService, setIsLoginPage } = useDeps();
   const [authUserDetails, setAuthUserDetails] = useState<LoginUserDetails | SignupUserDetails>({
     username: '',
     password: '',
@@ -44,6 +38,7 @@ export default function AuthComponent(): React.ReactElement {
         localStorage.setItem('x-auth-token', res.data.token);
         setError("");
         navigate('/home');
+        setIsLoginPage(false);
       }
     } catch (err) {
       setError(err.response.data.message);
@@ -63,7 +58,7 @@ export default function AuthComponent(): React.ReactElement {
           { login ? <div></div> : <InputComponent inputType="email"/> }
           <InputComponent inputType="password"/>
           <button className="auth__btn" onClick={(e)=>loginHandler(e)}>{login?"Login":"Signup"}</button>
-          {error && <p className="error__txt">Error: {error}!</p>}
+          {error && <p className="error__txt">{error}!</p>}
        </div>
     </AuthDetailsProvider>
   );

@@ -5,6 +5,8 @@ import { AccessService, SignupService } from '../services';
 type Deps = {
   accessService: AccessService,
   signupService: SignupService,
+  isLoginPage: boolean,
+  setIsLoginPage: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
 const DepsContext = createContext<Deps | undefined>(undefined);

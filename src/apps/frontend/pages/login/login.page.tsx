@@ -1,6 +1,6 @@
 import React from 'react';
 import './login.page.css';
-import AuthComponent from '../../components/login/auth.component';
+import { AuthComponent } from '../../components';
 
 export default function Login(): React.ReactElement {
   return(
