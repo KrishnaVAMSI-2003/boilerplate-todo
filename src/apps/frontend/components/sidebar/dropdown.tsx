@@ -4,12 +4,17 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { AddTaskParams } from '../../types/task.types';
 
-export default function BasicSelect() {
-  const [Type, setType] = React.useState('');
+type DropdownProps = {
+  setTask: React.Dispatch<React.SetStateAction<AddTaskParams>>
+}
+
+export default function BasicSelect(props: DropdownProps) {
+  const { setTask } = props;
 
   const handleChange = (event: SelectChangeEvent) => {
-    setType(event.target.value as string);
+    setTask(prev => ({...prev, taskType: event.target.value as AddTaskParams['taskType']}));
   };
 
   return (
@@ -19,7 +24,7 @@ export default function BasicSelect() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={Type}
+          value={'official'}
           label="Type"
           onChange={handleChange}
         >

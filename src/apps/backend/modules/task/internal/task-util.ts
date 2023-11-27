@@ -8,6 +8,10 @@ export default class TaskUtil {
     task.id = taskDb._id.toString();
     task.accountId = taskDb.accountId.toString();
     task.title = taskDb.title;
+    task.description = taskDb.description;
+    task.dueDate = taskDb.dueDate;
+    task.taskType = taskDb.taskType;
+    task.isCompleted = taskDb.isCompleted;
     return task;
   }
 }

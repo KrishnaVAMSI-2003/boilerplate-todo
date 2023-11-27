@@ -123,6 +123,10 @@ export default class TaskController {
       id: task.id,
       account: task.accountId,
       title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      taskType: task.taskType,
+      isCompleted: task.isCompleted,
     };
   }
 }
