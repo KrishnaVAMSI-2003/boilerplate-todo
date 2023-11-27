@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeps } from '../../contexts';
+import './navbar.component.scss';
 
 export default function Navbar(): React.ReactElement {
   const navigate = useNavigate();
-  const { isLoginPage, setIsLoginPage } = useDeps();
+  const { isLoginPage } = useDeps();
   const [tokenFound, setTokenFound] = React.useState(false);
   React.useEffect(() => {
     if(localStorage.getItem('x-auth-token')) {
@@ -14,13 +15,11 @@ export default function Navbar(): React.ReactElement {
   const handleHomeBtn = () => {
     if(tokenFound) {
       navigate('/home');
-      setIsLoginPage(false);
     }
   }
   const handleLoginBtn = () => {
     if(window.location.pathname === '/home') {
       localStorage.removeItem('x-auth-token');
-      setIsLoginPage(true);
       setTokenFound(false);
     }
     navigate('/');

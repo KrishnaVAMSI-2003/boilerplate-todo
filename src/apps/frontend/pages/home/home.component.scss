@@ -1,0 +1,94 @@
+.home--container{
+    flex-grow:1;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.line__grid__item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.home__line{
+    height: 90%;
+    width: 2px;
+    border-radius: 50%;
+    background-color: #2f7faa;
+}
+
+.sidebar--container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar__divider__line{
+    height: 2px;
+    width: 80%;
+    background-color: #2f7faa;
+}
+.addtodo__btn{
+    margin: 0 auto;
+}
+.tasklist__grid__item{
+    height: 100%;
+    width: fit-content;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+.tasklist--container{
+    width: 95%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 5px 5% 5px 5px;
+    overflow: hidden scroll;
+}
+.task--container{
+    background: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px 1px rgb(204, 204, 204);
+    position: relative;
+}
+.task__details {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+.task__prop{
+    padding: 10px;
+    margin:0
+}
+.task__prop__underline{
+    justify-self: center;
+    margin:0 auto;
+    width: 80%;
+    height:1px;
+    background-color: rgb(60, 60, 60);
+}
+.task__text__center{
+    text-align: center;
+}
+.icons--container{
+    position: absolute;
+    height: 40px;
+    width: 100px;
+    background: white;
+    right: 0;
+    right: -100%;
+    top:50%;
+    transform: translateY(-50%);
+    transition: all 0.2s ease-in-out;
+}
+.task--container:hover{
+    background: grey;
+    
+    .icons--container{
+        right: 10px;
+        box-shadow: 0 0 10px 1px rgb(204, 204, 204);
+    }
+}

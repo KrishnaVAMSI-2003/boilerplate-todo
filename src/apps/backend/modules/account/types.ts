@@ -32,7 +32,7 @@ export enum AccountErrorCode {
 
 export const CreateAccountParamsValidationSchema = [
   check('username', 'Username is required').exists()
-  .isLength({ min: 6, max: 20 }).withMessage('Username must be between 6 and 20 characters')
+  .isLength({ min: 3, max: 20 }).withMessage('Username must be between 3 and 20 characters')
   .isAlphanumeric().withMessage('Username must be alphanumeric'),
 
   check('email', 'Email is required').exists().isEmail().withMessage('Email must be valid'),

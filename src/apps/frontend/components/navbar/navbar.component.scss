@@ -1,0 +1,48 @@
+.navbar--container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 30px;
+    position: relative;
+}
+.navbar--icon--container{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    gap:15px;
+    color: #3d98c9;
+    text-shadow: -1px 0 #585858, 0 1px #585858, 1px 0 #585858, 0 -1px #585858;
+}
+.navbar__logo{
+    margin: 0;
+    width: 60px;
+}
+.navbar--btns--container{
+    display: flex;
+    gap: 20px;
+}
+.navbar__btn{
+    border: 1px solid #2f7faa;
+    border-radius: 10px;
+    padding: 7px 13px;
+    color: #3d98c9;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: none;
+    transition: all 0.2s ease-in-out;
+}
+.navbar__btn:hover,
+.navbar__btn__highlighted{
+    background-color: #2f7faa;
+    color: white;
+}
+.navbar__underline{
+    width: 90%;
+    height: 1.5px;
+    background-color: #2f7faa;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}

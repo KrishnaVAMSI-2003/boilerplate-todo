@@ -5,6 +5,7 @@ import InputComponent from './input.component';
 import { useNavigate } from 'react-router-dom';
 
 export default function AuthComponent(): React.ReactElement {
+  
   const navigate = useNavigate();
   const { accessService, signupService, setIsLoginPage } = useDeps();
   const [authUserDetails, setAuthUserDetails] = useState<LoginUserDetails | SignupUserDetails>({
@@ -14,8 +15,10 @@ export default function AuthComponent(): React.ReactElement {
   });
   const [login, setLogin] = useState(true);
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = React.useState(false);
 
-  React.useEffect(() => {setError("")},[authUserDetails]);
+  React.useEffect(() => {setError(" ")},[authUserDetails]);
+  React.useEffect(() => {setIsLoginPage(true)},[]);
 
   const handleSelect = (isLogin: boolean) => {
     setLogin(isLogin);
@@ -29,20 +32,27 @@ export default function AuthComponent(): React.ReactElement {
 
   const loginHandler = useCallback(async (e: React.MouseEvent<HTMLButtonElement | MouseEvent>) => {
     e.preventDefault();
-    setError("Please wait...");
-
+    setDisabled(true);
     try {
       const res:any = login ? await accessService.login(authUserDetails as LoginUserDetails) :
         await signupService.register(authUserDetails as SignupUserDetails);
-      if (res.data) {
+       
+      if (login) {
         localStorage.setItem('x-auth-token', res.data.token);
-        setError("");
-        navigate('/home');
+        setError("Successfully logged in!");
         setIsLoginPage(false);
+        setTimeout(() => {navigate('/home')},1000);
+      } else {
+        setLogin(true);
+        handleSelect(true);
+        setDisabled(false);
+        setError("successfully registered, Login to continue..");
       }
     } catch (err) {
+      setDisabled(false);
       setError(err.response.data.message);
     }
+    
   },[accessService, authUserDetails]);
 
   return (
@@ -57,8 +67,8 @@ export default function AuthComponent(): React.ReactElement {
           <InputComponent inputType="username"/>
           { login ? <div></div> : <InputComponent inputType="email"/> }
           <InputComponent inputType="password"/>
-          <button className="auth__btn" onClick={(e)=>loginHandler(e)}>{login?"Login":"Signup"}</button>
-          {error && <p className="error__txt">{error}!</p>}
+          <button className="auth__btn" onClick={(e)=>loginHandler(e)} disabled={disabled}>{login?"Login":"Signup"}</button>
+          <p className="auth__error">{error}</p>
        </div>
     </AuthDetailsProvider>
   );

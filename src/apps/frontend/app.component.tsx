@@ -9,7 +9,8 @@ import { AccessService, SignupService } from './services';
 import InspectLet from './vendor/inspectlet';
 
 import './app.global.scss';
-import { Navbar } from './components';
+import { Footer, Navbar } from './components';
+import Home from './pages/home/home.component';
 
 export default function App(): React.ReactElement {
   const [isLoginPage, setIsLoginPage] = React.useState(true);
@@ -38,8 +39,10 @@ export default function App(): React.ReactElement {
           <Routes>
             <Route path='/about' element={<About />} />
             <Route path='/' element={<Login />} />
+            <Route path='/home' element={<Home />} />
             {/* <Route path='*' element={<NotFound />} /> */}
           </Routes>
+          <Footer/>
           </Router>
         </DepsProvider>
   );

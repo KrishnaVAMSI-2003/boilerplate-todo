@@ -1,5 +1,5 @@
 import React from 'react';
-import './login.page.css';
+import './login.page.scss';
 import { AuthComponent } from '../../components';
 
 export default function Login(): React.ReactElement {
