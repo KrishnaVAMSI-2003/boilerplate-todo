@@ -18,8 +18,7 @@ export default function Home(): React.ReactElement {
     React.useEffect(() => {
         if(!localStorage.getItem('x-auth-token')) navigate('/');
         setIsLoginPage(false);
-    },[]);
-    React.useEffect(() => {
+
         const fetchTasks = async() => {
             try{
                 const tasksService = new TasksService();
@@ -32,7 +31,6 @@ export default function Home(): React.ReactElement {
         fetchTasks();
     },[]);
 
-    React.useEffect(() => {console.log(tasks)},[tasks]);
     return(
         <TasksDetailsProvider taskProps={{
             tasks, setTasks,

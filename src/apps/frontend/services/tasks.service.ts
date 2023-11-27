@@ -26,6 +26,15 @@ export class TasksService extends APIService {
         }
     });
   }
+
+  deleteTask(taskId: string): Promise<void> {
+    const accountId = localStorage.getItem("accountId");
+    return this.apiClient.delete(`accounts/${accountId}/tasks/${taskId}`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("x-auth-token")}`
+        }
+    });
+  }
 }
 
 export class UserService extends APIService {

@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Task } from "../../types/task.types";
+import { useTasks } from "../../contexts/tasks.provider";
 
 type TaskComponentParams = {
     task: Task;
@@ -13,6 +14,17 @@ type TaskComponentParams = {
 
 export default function TaskComponent(props: TaskComponentParams): React.ReactElement {
     const { task } = props;
+    const { setTasks, tasksService } = useTasks();
+
+    const handleDelete = async() => {
+        try{
+            await tasksService.deleteTask(task.id);
+            setTasks((prev:Task[]) => prev.filter((taskEle:Task) => taskEle.id !== task.id));
+        } catch(err){
+
+        }
+    }
+
     return(
         <Box className="task--container">
             <Grid container spacing={0}>
@@ -42,7 +54,7 @@ export default function TaskComponent(props: TaskComponentParams): React.ReactEl
                 <DoneOutlineIcon className='done__icon'/>
                 <RemoveDoneIcon className='remove__done__icon'/>
                 <EditIcon className='edit__icon'/>
-                <DeleteForeverIcon className='delete__icon'/>
+                <DeleteForeverIcon className='delete__icon' onClick={()=>handleDelete()}/>
             </div>
         </Box>
     )
