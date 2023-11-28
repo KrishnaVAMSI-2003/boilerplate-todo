@@ -1,12 +1,13 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { TasksService } from '../services/tasks.service';
-
-// import { AddTaskParams } from '../types/task.types';
+import { Task, Filters } from '../types/task.types';
 
 type TasksContextType = {
-    tasks: any,
-    setTasks: React.Dispatch<React.SetStateAction<any>>,
-    tasksService: TasksService,
+  tasks: Task[],
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>,
+  filters: Filters,
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>,
+  tasksService: TasksService,
 }
 
 const TasksContext = createContext<TasksContextType | undefined>(undefined);

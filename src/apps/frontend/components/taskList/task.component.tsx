@@ -52,7 +52,6 @@ export default function TaskComponent(props: TaskComponentParams): React.ReactEl
             await tasksService.updateTaskStatus(task.id);
             setTasks((prev:Task[]) => prev.map((taskEle:Task) => taskEle.id === task.id ? {...taskEle, isCompleted: task.isCompleted} : taskEle));
         } catch(err) {
-            console.log(err);
         }
     }
 

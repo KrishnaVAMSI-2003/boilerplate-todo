@@ -20,4 +20,21 @@ export type Task = AddTaskParams & {
 export type TaskContextType = {
     tasks: Task[];
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+};
+
+export enum statusFiltersEnum {
+    ALL = "all",
+    COMPLETED = "completed",
+    INCOMPLETE = "incomplete"
+}
+
+export enum timelineFiltersEnum {
+    OVERDUE = 'overdue',
+    TODAY = 'today',
+    UPCOMING = 'upcoming',
+}
+
+export type Filters = {
+    status: statusFiltersEnum,
+    timeline: timelineFiltersEnum,
 }

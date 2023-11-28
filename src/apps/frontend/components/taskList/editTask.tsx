@@ -23,7 +23,6 @@ export default function EditTask(props: EditTaskParams):React.ReactElement {
         try{
             const editedTask:any = await tasksService.editTask(editTask);
             setTasks((prev:Task[]) => prev.map((taskEle:Task) => taskEle.id === editTask.id ? editTask : taskEle));
-            console.log(editedTask.data);
             setOpened(false);
         } catch(err) {
             

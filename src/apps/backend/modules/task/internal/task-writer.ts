@@ -78,7 +78,7 @@ export default class TaskWriter {
     };
     const task = await TaskReader.getTaskForAccount(taskParams);
     task.isCompleted = !task.isCompleted;
-    console.log(task.isCompleted);
+    
     const updatedTask = await TaskRepository.taskDB.findOneAndUpdate(
       {
         _id: task.id,

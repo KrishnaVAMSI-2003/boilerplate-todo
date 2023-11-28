@@ -1,15 +1,26 @@
 import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { statusFiltersEnum, timelineFiltersEnum } from '../../types/task.types';
+import { useTasks } from '../../contexts/tasks.provider';
 
-export default function ToggleButtons() {
-  const [alignment, setAlignment] = React.useState<string | null>('left');
+type ToggleButtonsProps = {
+  filtersArray: statusFiltersEnum[] | timelineFiltersEnum[],
+  buttonsfor?: 'status' | 'timeline'
+}
+
+export default function ToggleButtons(props: ToggleButtonsProps) {
+  const { filtersArray, buttonsfor } = props;
+
+  const { setFilters } = useTasks();
+
+  const [alignment, setAlignment] = React.useState<string | null>(filtersArray[0]);
 
   const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newAlignment: string | null,
   ) => {
-    console.log(event.target);
+    setFilters(prev => ({...prev, [buttonsfor as string]: newAlignment as statusFiltersEnum | timelineFiltersEnum}));
     setAlignment(newAlignment);
   };
 
@@ -22,14 +33,14 @@ export default function ToggleButtons() {
       color='primary'
       className='togglebuttons--container'
     >
-      <ToggleButton value="left" aria-label="left aligned" className='toggle__button'>
-        All
+      <ToggleButton value={filtersArray[0]} aria-label="left aligned" className='toggle__button'>
+        {filtersArray[0]}
       </ToggleButton>
-      <ToggleButton value="center" aria-label="centered" className='toggle__button'>
-        Completed
+      <ToggleButton value={filtersArray[1]} aria-label="centered" className='toggle__button'>
+        {filtersArray[1]}
       </ToggleButton>
-      <ToggleButton value="right" aria-label="right aligned" className='toggle__button'>
-        Active
+      <ToggleButton value={filtersArray[2]} aria-label="right aligned" className='toggle__button'>
+        {filtersArray[2]}
       </ToggleButton>
     </ToggleButtonGroup>
   );
