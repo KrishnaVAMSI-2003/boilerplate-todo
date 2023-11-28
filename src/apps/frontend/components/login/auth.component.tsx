@@ -39,7 +39,7 @@ export default function AuthComponent(): React.ReactElement {
        
       if (login) {
         localStorage.setItem('x-auth-token', res.data.token);
-        localStorage.setItem('username', res.data.username);
+        localStorage.setItem('username', authUserDetails.username);
         localStorage.setItem('accountId', res.data.accountId);
 
         setError("Successfully logged in!");

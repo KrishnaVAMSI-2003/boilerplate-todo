@@ -12,6 +12,7 @@ import {
   CreateTaskValidationError,
   UpdateTaskValidationError,
   UpdateTaskParams,
+  UpdateTaskStatusParams,
 } from './types';
 
 export default class TaskService {
@@ -49,5 +50,9 @@ export default class TaskService {
   }
   public static async updateTask(params: UpdateTaskParams): Promise<Task> {
     return TaskWriter.updateTask(params);
+  }
+
+  public static async updateTaskStatus(params: UpdateTaskStatusParams): Promise<Task> {
+    return TaskWriter.updateTaskStatus(params);
   }
 }

@@ -11,6 +11,7 @@ export default class TaskRouter {
     router.get('/', TaskController.getAllTasks);
     router.get('/:taskId', TaskController.getTask);
     router.put('/:taskId', UpdateTaskValidationSchema, TaskController.updateTask);
+    router.patch('/:taskId', TaskController.updateTaskStatus);
     router.delete('/:taskId', TaskController.deleteTask);
 
     return router;

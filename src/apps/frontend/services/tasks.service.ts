@@ -1,9 +1,9 @@
 import APIService from './api.service';
-import { SignupUserDetails } from '../types/auth.types';
-import { AddTaskParams } from '../types/task.types';
+import { AddTaskParams, Task } from '../types/task.types';
 
 export class TasksService extends APIService {
-  addtask(task: AddTaskParams): Promise<void> {
+
+  addTask(task: AddTaskParams): Promise<void> {
     const accountId = localStorage.getItem("accountId");
     const { title, description, dueDate, taskType} = task;
     return this.apiClient.post(`accounts/${accountId}/tasks`, {
@@ -27,23 +27,37 @@ export class TasksService extends APIService {
     });
   }
 
+  editTask(task: Task): Promise<void> {
+    const accountId = localStorage.getItem("accountId");
+    const { title, description, dueDate, taskType, isCompleted} = task;
+    return this.apiClient.put(`accounts/${accountId}/tasks/${task.id}`, {
+        title,
+        description,
+        dueDate,
+        taskType,
+        isCompleted,
+    },{
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("x-auth-token")}`
+        }
+    });
+  }
+  
+  updateTaskStatus(taskId: string): Promise<void> {
+    const accountId = localStorage.getItem("accountId");
+    return this.apiClient.patch(`accounts/${accountId}/tasks/${taskId}`,{}, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("x-auth-token")}`
+        }
+    });
+  }
+
   deleteTask(taskId: string): Promise<void> {
     const accountId = localStorage.getItem("accountId");
     return this.apiClient.delete(`accounts/${accountId}/tasks/${taskId}`, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("x-auth-token")}`
         }
-    });
-  }
-}
-
-export class UserService extends APIService {
-  register(userDetails: SignupUserDetails): Promise<void> {
-    const {username, password, email} = userDetails;
-    return this.apiClient.post("/accounts", {
-      username,
-      password,
-      email,
     });
   }
 }

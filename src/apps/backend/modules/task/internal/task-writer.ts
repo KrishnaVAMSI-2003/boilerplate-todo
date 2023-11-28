@@ -5,6 +5,7 @@ import {
   Task,
   TaskWithTitleExistsError,
   UpdateTaskParams,
+  UpdateTaskStatusParams
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -68,5 +69,24 @@ export default class TaskWriter {
         _id: task.id,
       }
     );
+  }
+
+  public static async updateTaskStatus(params: UpdateTaskStatusParams): Promise<Task> {
+    const taskParams: GetTaskParams = {
+      accountId: params.accountId,
+      taskId: params.taskId,
+    };
+    const task = await TaskReader.getTaskForAccount(taskParams);
+    task.isCompleted = !task.isCompleted;
+    console.log(task.isCompleted);
+    const updatedTask = await TaskRepository.taskDB.findOneAndUpdate(
+      {
+        _id: task.id,
+      },
+      {
+        isCompleted: task.isCompleted,
+      }
+    );
+    return TaskUtil.convertTaskDBToTask(updatedTask);
   }
 }

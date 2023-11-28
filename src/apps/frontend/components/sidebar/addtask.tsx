@@ -6,7 +6,6 @@ import DatePickerValue from './datepicker';
 import Dropdown from './dropdown';
 import Button from '@mui/material/Button';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-// import { useTasks } from '../../contexts/tasks.provider';
 import { AddTaskParams, TaskTypeEnum } from '../../types/task.types';
 import { useTasks } from '../../contexts/tasks.provider';
 
@@ -22,10 +21,10 @@ export default function AddTask():React.ReactElement {
 
     const handleAddTask = async():Promise<void> => {
         try{
-            const addedTask:any = await tasksService.addtask(task);
+            const addedTask:any = await tasksService.addTask(task);
             setTasks([...tasks, addedTask.data]);
         } catch(err) {
-            console.log(err);
+            
         }
         setTask({
             title:'',
@@ -40,10 +39,10 @@ export default function AddTask():React.ReactElement {
         <Box component="form" sx={{'& > :not(style)': { m: 1, width: '100%' },}} noValidate autoComplete="off">    
         <Grid container spacing={2}>
             <Grid xs={6}>
-                <DatePickerValue setTask={setTask}/>
+                <DatePickerValue defaultDate={task.dueDate as Date} setTask={setTask}/>
             </Grid>
             <Grid xs={6}>
-                <Dropdown setTask={setTask}/>
+                <Dropdown defaultType={task.taskType} setTask={setTask}/>
             </Grid>
             <Grid xs={12}>
                 <TextField id="filled-basic" label="Title" variant="filled" fullWidth value={task.title}
@@ -55,7 +54,8 @@ export default function AddTask():React.ReactElement {
                     onChange={(e) => {setTask(prev => ({...prev, description: e.target.value}))}}
                 />
             </Grid>
-            <div className="addtodo__btn"><Button variant="contained"
+            <div className="addtodo__btn">
+                <Button variant="contained" size="medium" color="success"
                 onClick={()=>handleAddTask()}
             ><AddTaskIcon/>‎ Add Todo</Button></div>
         </Grid>

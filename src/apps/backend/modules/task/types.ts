@@ -62,6 +62,11 @@ export type UpdateTaskParams = {
   taskType: TaskTypeEnum;
   isCompleted: boolean;
 }
+export type UpdateTaskStatusParams = {
+  accountId: string;
+  taskId: string;
+}
+
 
 export type PaginationParams = {
   page: number;

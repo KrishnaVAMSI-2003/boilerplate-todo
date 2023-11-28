@@ -6,9 +6,10 @@ export default function ToggleButtons() {
   const [alignment, setAlignment] = React.useState<string | null>('left');
 
   const handleAlignment = (
-    _event: React.MouseEvent<HTMLElement>,
+    event: React.MouseEvent<HTMLElement>,
     newAlignment: string | null,
   ) => {
+    console.log(event.target);
     setAlignment(newAlignment);
   };
 
@@ -18,14 +19,16 @@ export default function ToggleButtons() {
       exclusive
       onChange={handleAlignment}
       aria-label="text alignment"
+      color='primary'
+      className='togglebuttons--container'
     >
-      <ToggleButton value="left" aria-label="left aligned">
+      <ToggleButton value="left" aria-label="left aligned" className='toggle__button'>
         All
       </ToggleButton>
-      <ToggleButton value="center" aria-label="centered">
+      <ToggleButton value="center" aria-label="centered" className='toggle__button'>
         Completed
       </ToggleButton>
-      <ToggleButton value="right" aria-label="right aligned">
+      <ToggleButton value="right" aria-label="right aligned" className='toggle__button'>
         Active
       </ToggleButton>
     </ToggleButtonGroup>

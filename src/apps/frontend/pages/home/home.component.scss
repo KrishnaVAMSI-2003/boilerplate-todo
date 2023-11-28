@@ -18,19 +18,26 @@
 
 .sidebar--container{
     height: 100%;
+    padding-left: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
+.sidebar__text{
+    margin:2px;
+}
 .sidebar__divider__line{
     height: 2px;
     width: 80%;
     background-color: #2f7faa;
+    margin:10px
+}
+.togglebuttons--container{
+    padding:10px;
 }
 .addtodo__btn{
-    margin: 0 auto;
+    margin: 10px auto;
 }
 .tasklist__grid__item{
     height: 100%;
@@ -53,6 +60,10 @@
     border-radius: 5px;
     box-shadow: 0px 0px 3px 1px rgb(204, 204, 204);
     position: relative;
+    background: rgb(255, 251, 251);
+}
+.task__completed{
+    background: rgb(225, 255, 225);
 }
 .task__details {
     box-shadow: none;
@@ -62,6 +73,14 @@
 .task__prop{
     padding: 10px;
     margin:0
+}
+.task__title, .task__description{
+    margin: 0 0 0 20px;
+}
+.task__description{
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 1.1rem;
 }
 .task__prop__underline{
     justify-self: center;
@@ -74,21 +93,45 @@
     text-align: center;
 }
 .icons--container{
+    padding:0px 10px;
     position: absolute;
-    height: 40px;
-    width: 100px;
-    background: white;
+    background: rgb(208, 210, 210);
     right: 0;
     right: -100%;
     top:50%;
     transform: translateY(-50%);
+    border-radius: 5px;
     transition: all 0.2s ease-in-out;
 }
+.task__icon{
+    display: inline-block;
+    border-radius: 50%;
+    padding: 10px 12px;
+    cursor: pointer;
+    margin:10px;
+    background: white;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid black;
+}
+.done__icon:hover{
+    background: rgb(137, 228, 137);
+}
+.remove__done__icon:hover{
+    background: rgb(222, 123, 123);
+}
+.edit__icon:hover{
+    background: rgb(189, 138, 236);
+}
+.delete__icon:hover{
+    background: rgb(222, 123, 123)
+}
+
+
 .task--container:hover{
-    background: grey;
+    background: rgb(196, 196, 196);
     
     .icons--container{
         right: 10px;
-        box-shadow: 0 0 10px 1px rgb(204, 204, 204);
+        box-shadow: 0 0 10px 1px rgb(153, 153, 153);
     }
 }

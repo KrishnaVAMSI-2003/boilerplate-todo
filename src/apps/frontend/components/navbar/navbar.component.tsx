@@ -20,6 +20,8 @@ export default function Navbar(): React.ReactElement {
   const handleLoginBtn = () => {
     if(window.location.pathname === '/home') {
       localStorage.removeItem('x-auth-token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('accountId');
       setTokenFound(false);
     }
     navigate('/');

@@ -12,6 +12,7 @@ import {
   GetTaskParams,
   TaskTypeEnum,
   UpdateTaskParams,
+  UpdateTaskStatusParams
 } from '../types';
 
 export default class TaskController {
@@ -116,6 +117,23 @@ export default class TaskController {
       next(e);
     }
 
+  }
+
+  public static async updateTaskStatus(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try{
+      const params: UpdateTaskStatusParams = {
+        accountId: req.params.accountId,
+        taskId: req.params.taskId,
+      };
+      const task = await TaskService.updateTaskStatus(params);
+      res.status(200).send(TaskController.serializeTaskAsJSON(task));
+    } catch(e) {
+      next(e);
+    }
   }
 
   private static serializeTaskAsJSON(task: Task): unknown {

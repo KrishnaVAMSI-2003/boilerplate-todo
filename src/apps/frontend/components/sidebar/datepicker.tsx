@@ -4,20 +4,21 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AddTaskParams } from '../../types/task.types';
+import { AddTaskParams, Task } from '../../types/task.types';
 
 type DatePickerValueProps = {
-  setTask: React.Dispatch<React.SetStateAction<AddTaskParams>>
+  defaultDate: Date;
+  setTask: React.Dispatch<React.SetStateAction<AddTaskParams | Task>>
 }
 
 export default function DatePickerValue(props: DatePickerValueProps) {
-  const { setTask } = props;
+  const { defaultDate, setTask } = props;
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker']}>
         <DatePicker
           label="Due Date"
-          value={dayjs(new Date)}
+          value={dayjs(defaultDate)}
           onChange={(newValue) => setTask(prev => ({...prev, dueDate: newValue?.toDate()}))}
         />
       </DemoContainer>

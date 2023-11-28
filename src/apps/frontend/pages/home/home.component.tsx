@@ -25,7 +25,7 @@ export default function Home(): React.ReactElement {
                 const fetchedTasks:any = await tasksService.getTasks();
                 setTasks(fetchedTasks.data.tasks);
             } catch(err) {
-                console.log(err);
+                
             }
         }
         fetchTasks();
