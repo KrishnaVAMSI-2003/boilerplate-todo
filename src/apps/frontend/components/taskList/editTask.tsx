@@ -5,7 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import UpdateIcon from '@mui/icons-material/Update';
 import { Task } from '../../types/task.types';
-import { useTasks } from '../../contexts/tasks.provider';
+import { useDeps, useTasks } from '../../contexts';
 import DatePickerValue from '../sidebar/datepicker';
 import Dropdown from '../sidebar/dropdown';
 
@@ -18,14 +18,16 @@ export default function EditTask(props: EditTaskParams):React.ReactElement {
     const { task, setOpened } = props;
     const [editTask, setEditTask] = React.useState<Task>(task);
     const { setTasks, tasksService } = useTasks();
+    const { snackbar, setSnackbar } = useDeps();
 
     const handleEditTask = async():Promise<void> => {
         try{
-            const editedTask:any = await tasksService.editTask(editTask);
+            await tasksService.editTask(editTask);
             setTasks((prev:Task[]) => prev.map((taskEle:Task) => taskEle.id === editTask.id ? editTask : taskEle));
             setOpened(false);
+            setSnackbar({...snackbar, open: true, message: 'Task updated successfully', severity: 'success'});
         } catch(err) {
-            
+            setSnackbar({...snackbar, open: true, message: err.response.data.message, severity: 'error'})
         }
     }
 
@@ -50,7 +52,7 @@ export default function EditTask(props: EditTaskParams):React.ReactElement {
                 />
             </Grid>
             <div className="addtodo__btn"><Button variant="contained" color='secondary'
-                onClick={()=>handleEditTask()}
+                onClick={handleEditTask}
             ><UpdateIcon/>‎ Update</Button></div>
         </Grid>
         </Box>      

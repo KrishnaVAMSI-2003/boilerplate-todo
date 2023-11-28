@@ -5,7 +5,7 @@ import './navbar.component.scss';
 
 export default function Navbar(): React.ReactElement {
   const navigate = useNavigate();
-  const { isLoginPage } = useDeps();
+  const { isLoginPage, snackbar, setSnackbar } = useDeps();
   const [tokenFound, setTokenFound] = React.useState(false);
   React.useEffect(() => {
     if(localStorage.getItem('x-auth-token')) {
@@ -13,8 +13,16 @@ export default function Navbar(): React.ReactElement {
     }
   },[]);
   const handleHomeBtn = () => {
+    if(!isLoginPage) {
+      setSnackbar({...snackbar, open: true, message: 'In Home page...', severity: 'info'});
+      return;
+    }
+
     if(tokenFound) {
       navigate('/home');
+        setSnackbar({...snackbar, open: true, message: 'Account found! Navigated to home page...', severity: 'info'});
+    } else {
+      setSnackbar({...snackbar, open: true, message: 'No account found! Login to proceed...', severity: 'warning'});
     }
   }
   const handleLoginBtn = () => {
@@ -23,8 +31,12 @@ export default function Navbar(): React.ReactElement {
       localStorage.removeItem('username');
       localStorage.removeItem('accountId');
       setTokenFound(false);
+      setSnackbar({...snackbar, open: true, message: 'Logged out successfully!', severity: 'success'});
+      navigate('/');
+    } else {
+      setSnackbar({...snackbar, open: true, message: 'In Login page...', severity: 'info'});
     }
-    navigate('/');
+    
   }
   return (
     <div className='navbar--container'>

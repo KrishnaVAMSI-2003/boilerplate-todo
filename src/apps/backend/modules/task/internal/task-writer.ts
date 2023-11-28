@@ -15,7 +15,7 @@ import TaskUtil from './task-util';
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
     const existingTask = await TaskRepository.taskDB.findOne({
-      account: params.accountId,
+      accountId: params.accountId,
       title: params.title,
     });
     if (existingTask) {

@@ -11,9 +11,16 @@ import InspectLet from './vendor/inspectlet';
 import './app.global.scss';
 import { Footer, Navbar } from './components';
 import Home from './pages/home/home.component';
+import SnackbarComponent from './components/snackbar/snackbar.component';
+import { SnackBar } from './types/task.types';
 
 export default function App(): React.ReactElement {
   const [isLoginPage, setIsLoginPage] = React.useState(true);
+  const [snackbar, setSnackbar] = React.useState<SnackBar>({
+    open: false,
+    message: '',
+    severity: 'info'
+  });
 
   useEffect(() => {
     const inspectletKey = Config.getConfigValue('inspectletKey');
@@ -32,7 +39,8 @@ export default function App(): React.ReactElement {
           accessService: new AccessService(),
           signupService: new SignupService(),
           isLoginPage: isLoginPage,
-          setIsLoginPage: setIsLoginPage
+          setIsLoginPage: setIsLoginPage,
+          snackbar, setSnackbar
         }}>
           <Router>
           <Navbar/>
@@ -44,6 +52,7 @@ export default function App(): React.ReactElement {
           </Routes>
           <Footer/>
           </Router>
+          {snackbar.open && <SnackbarComponent/>}
         </DepsProvider>
   );
 }

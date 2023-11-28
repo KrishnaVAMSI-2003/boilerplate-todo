@@ -5,19 +5,17 @@ import './home.component.scss';
 import Grid from '@mui/material/Grid';
 import TaskList from "../../components/taskList/tasklist.component";
 import Sidebar from "../../components/sidebar/sidebar.component";
-import { TasksDetailsProvider } from "../../contexts/tasks.provider";
+import { TasksDetailsProvider } from "../../contexts";
 import { Filters, Task, statusFiltersEnum, timelineFiltersEnum} from "../../types/task.types";
 import { TasksService } from "../../services/tasks.service";
 
 export default function Home(): React.ReactElement {
 
     const [tasks, setTasks] = React.useState<Task[]>([]);
-
     const [filters, setFilters] = React.useState<Filters>({
         status: 'all' as statusFiltersEnum,
         timeline: 'today' as timelineFiltersEnum,
     });
-
     const { setIsLoginPage } = useDeps();
     const navigate = useNavigate();
     React.useEffect(() => {
@@ -30,7 +28,6 @@ export default function Home(): React.ReactElement {
                 const fetchedTasks:any = await tasksService.getTasks();
                 setTasks(fetchedTasks.data.tasks);
             } catch(err) {
-                
             }
         }
         fetchTasks();

@@ -24,7 +24,7 @@ export enum AccessTokenErrorCode {
 
 export const CreateAccessTokenParamsValidationSchema = [
   check('username', 'Username is required').exists().isAlphanumeric().withMessage('Username must be alphanumeric')
-  .isLength({ min: 6, max: 20 }).withMessage('Username must be between 6 and 20 characters'),
+  .isLength({ min: 3, max: 20 }).withMessage('Username must be between 3 and 20 characters'),
 
   check('password', 'Password is required').exists()
   .trim().isLength({ min: 6, max: 20 }).withMessage('Password must be between 6 and 20 characters')

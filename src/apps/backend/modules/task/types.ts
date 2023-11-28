@@ -81,8 +81,8 @@ export enum TaskErrorCode {
 }
 
 export const CreateTaskValidationSchema = [
-  check('title', 'Title is required').exists(),
-  check('description', 'Description is required').exists(),
+  check('title', 'Title is required').exists().trim().isLength({ min: 1, max: 100 }).withMessage('Title should be between 1 to 100 characters'),
+  check('description', 'Description is required').exists().trim().isLength({ min: 1, max: 1000 }).withMessage('Description should be between 1 to 1000 characters'),
   check('dueDate', 'Due date is required').exists(),
   check('taskType', 'Task type is required').exists().isIn(Object.values(TaskTypeEnum)),
 ]

@@ -7,10 +7,11 @@ import Dropdown from './dropdown';
 import Button from '@mui/material/Button';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import { AddTaskParams, TaskTypeEnum } from '../../types/task.types';
-import { useTasks } from '../../contexts/tasks.provider';
+import { useDeps, useTasks } from '../../contexts';
 
 export default function AddTask():React.ReactElement {
     const { tasks, setTasks, tasksService } = useTasks();
+    const { snackbar, setSnackbar } = useDeps();
 
     const [task, setTask] = React.useState<AddTaskParams>({
         title:'',
@@ -23,15 +24,16 @@ export default function AddTask():React.ReactElement {
         try{
             const addedTask:any = await tasksService.addTask(task);
             setTasks([...tasks, addedTask.data]);
+            setSnackbar({...snackbar, open: true, message: 'Task added successfully', severity: 'success'});
+            setTask({
+                title:'',
+                description:'',
+                dueDate: new Date(),
+                taskType: 'official' as TaskTypeEnum,
+            });
         } catch(err) {
-            
+            setSnackbar({...snackbar, open: true, message: err.response.data.message, severity: 'error'})
         }
-        setTask({
-            title:'',
-            description:'',
-            dueDate: new Date(),
-            taskType: 'official' as TaskTypeEnum,
-        });
     }
 
   return (

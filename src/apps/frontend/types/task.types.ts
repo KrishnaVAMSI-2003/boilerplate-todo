@@ -38,3 +38,9 @@ export type Filters = {
     status: statusFiltersEnum,
     timeline: timelineFiltersEnum,
 }
+
+export type SnackBar = {
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error' | 'warning' | 'info';
+};

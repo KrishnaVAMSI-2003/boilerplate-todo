@@ -2,7 +2,7 @@ import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { statusFiltersEnum, timelineFiltersEnum } from '../../types/task.types';
-import { useTasks } from '../../contexts/tasks.provider';
+import { useDeps, useTasks } from '../../contexts';
 
 type ToggleButtonsProps = {
   filtersArray: statusFiltersEnum[] | timelineFiltersEnum[],
@@ -13,6 +13,7 @@ export default function ToggleButtons(props: ToggleButtonsProps) {
   const { filtersArray, buttonsfor } = props;
 
   const { setFilters } = useTasks();
+  const { snackbar, setSnackbar } = useDeps();
 
   const [alignment, setAlignment] = React.useState<string | null>(filtersArray[0]);
 
@@ -22,6 +23,7 @@ export default function ToggleButtons(props: ToggleButtonsProps) {
   ) => {
     setFilters(prev => ({...prev, [buttonsfor as string]: newAlignment as statusFiltersEnum | timelineFiltersEnum}));
     setAlignment(newAlignment);
+    setSnackbar({...snackbar, open: true, message: `Filter applied for ${buttonsfor}: ${newAlignment}`, severity: 'success'});
   };
 
   return (

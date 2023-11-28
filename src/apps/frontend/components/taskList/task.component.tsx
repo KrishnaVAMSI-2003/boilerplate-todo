@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Task } from "../../types/task.types";
-import { useTasks } from "../../contexts/tasks.provider";
+import { useDeps, useTasks } from "../../contexts";
 import EditTask from "./editTask";
 
 type TaskComponentParams = {
@@ -28,6 +28,7 @@ const style = {
 export default function TaskComponent(props: TaskComponentParams): React.ReactElement {
     const { task } = props;
     const { setTasks, tasksService } = useTasks();
+    const { snackbar, setSnackbar } = useDeps();
     
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -37,13 +38,14 @@ export default function TaskComponent(props: TaskComponentParams): React.ReactEl
         try{
             await tasksService.deleteTask(task.id);
             setTasks((prev:Task[]) => prev.filter((taskEle:Task) => taskEle.id !== task.id));
+            setSnackbar({...snackbar, open: true, message: 'Task deleted successfully', severity: 'success'});
         } catch(err){
-
+            setSnackbar({...snackbar, open: true, message: err.response.data.message, severity: 'error'});
         }
     }
 
     const handleEdit = async() => {
-        handleOpen();
+        handleOpen(); //opens modal
     }
 
     const handleUpdateStatus = async() => {
@@ -51,7 +53,9 @@ export default function TaskComponent(props: TaskComponentParams): React.ReactEl
         try{
             await tasksService.updateTaskStatus(task.id);
             setTasks((prev:Task[]) => prev.map((taskEle:Task) => taskEle.id === task.id ? {...taskEle, isCompleted: task.isCompleted} : taskEle));
+            setSnackbar({...snackbar, open: true, message: 'Task status updated successfully', severity: 'success'});
         } catch(err) {
+            setSnackbar({...snackbar, open: true, message: err.response.data.message, severity: 'error'});
         }
     }
 
@@ -80,10 +84,10 @@ export default function TaskComponent(props: TaskComponentParams): React.ReactEl
                     <p className='task__prop task__description'>{task.description}</p>
                 </Grid>
             </Grid>
-            <div className='icons--container' onClick={handleUpdateStatus}>
+            <div className='icons--container'>
                 {task.isCompleted ?
-                    <div className="task__icon remove__done__icon"><RemoveDoneIcon/></div> : 
-                    <div className='task__icon done__icon'><DoneOutlineIcon/></div>                    
+                    <div className="task__icon remove__done__icon"  onClick={handleUpdateStatus}><RemoveDoneIcon/></div> : 
+                    <div className='task__icon done__icon'  onClick={handleUpdateStatus}><DoneOutlineIcon/></div>                    
                 }
                 <div className='task__icon edit__icon' onClick={handleEdit}>
                     <EditIcon/>

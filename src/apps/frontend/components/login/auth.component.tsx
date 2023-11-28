@@ -7,17 +7,15 @@ import { useNavigate } from 'react-router-dom';
 export default function AuthComponent(): React.ReactElement {
   
   const navigate = useNavigate();
-  const { accessService, signupService, setIsLoginPage } = useDeps();
+  const { accessService, signupService, setIsLoginPage, snackbar, setSnackbar } = useDeps();
   const [authUserDetails, setAuthUserDetails] = useState<LoginUserDetails | SignupUserDetails>({
     username: '',
     password: '',
     email: '',
   });
   const [login, setLogin] = useState(true);
-  const [error, setError] = useState("");
   const [disabled, setDisabled] = React.useState(false);
 
-  React.useEffect(() => {setError(" ")},[authUserDetails]);
   React.useEffect(() => {setIsLoginPage(true)},[]);
 
   const handleSelect = (isLogin: boolean) => {
@@ -27,7 +25,6 @@ export default function AuthComponent(): React.ReactElement {
       password: '',
       email: '',
     });
-    setError("");
   }
 
   const loginHandler = useCallback(async (e: React.MouseEvent<HTMLButtonElement | MouseEvent>) => {
@@ -42,18 +39,18 @@ export default function AuthComponent(): React.ReactElement {
         localStorage.setItem('username', authUserDetails.username);
         localStorage.setItem('accountId', res.data.accountId);
 
-        setError("Successfully logged in!");
+        setSnackbar({...snackbar, open: true, message: "Successfully logged in!", severity: 'success'});
         setIsLoginPage(false);
-        setTimeout(() => {navigate('/home')},1000);
+        navigate('/home');
       } else {
         setLogin(true);
         handleSelect(true);
         setDisabled(false);
-        setError("successfully registered, Login to continue..");
+        setSnackbar({...snackbar, open: true, message: "Successfully registered! Login to proceed...", severity: 'success'})
       }
     } catch (err) {
       setDisabled(false);
-      setError(err.response.data.message);
+      setSnackbar({...snackbar, open: true, message: err.response.data.message, severity: 'error'})
     }
     
   },[accessService, authUserDetails]);
@@ -71,7 +68,6 @@ export default function AuthComponent(): React.ReactElement {
           { login ? <div></div> : <InputComponent inputType="email"/> }
           <InputComponent inputType="password"/>
           <button className="auth__btn" onClick={(e)=>loginHandler(e)} disabled={disabled}>{login?"Login":"Signup"}</button>
-          <p className="auth__error">{error}</p>
        </div>
     </AuthDetailsProvider>
   );
