@@ -26,6 +26,7 @@ export default class AccountsE2EDataManager {
       .map(() => ({
         username: faker.internet.email(),
         password: faker.internet.password(),
+        email: faker.internet.email(),
       }));
 
     await Promise.all(data.map((datum) => AccountService.createAccount(datum)));
@@ -41,6 +42,7 @@ export default class AccountsE2EDataManager {
     const data: CreateAccountParams = newAccountData || {
       username: faker.internet.email(),
       password: faker.internet.password(),
+      email: faker.internet.email(),
     };
 
     try {

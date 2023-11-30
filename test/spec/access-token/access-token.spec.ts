@@ -22,7 +22,7 @@ describe('API /api/access-tokens', () => {
     it('should return access token for given username password', async () => {
       sinonSandbox.stub(ConfigService, 'getStringValue').returns('1h');
 
-      const params = { username: faker.internet.userName(), password: 'password' };
+      const params = { username: faker.internet.userName(), password: 'password', email: faker.internet.email() };
       await AccountWriter.createAccount(params);
 
       const res = await chai

@@ -32,7 +32,6 @@ export const taskDbSchema: Schema = new Schema<TaskDB>(
     dueDate: {
       type: Date,
       required: true,
-      index: true,
     },
     taskType: {
       type: String,

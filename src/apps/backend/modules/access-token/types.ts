@@ -20,6 +20,7 @@ export enum AccessTokenErrorCode {
   ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_ERR_02',
   AUTHORIZATION_HEADER_NOT_FOUND = 'ACCESS_TOKEN_ERR_03',
   INVALID_AUTHORIZATION_HEADER = 'ACCESS_TOKEN_ERR_04',
+  BAD_REQUEST = 'ACCESS_TOKEN_ERR_05',
 }
 
 export const CreateAccessTokenParamsValidationSchema = [
@@ -75,7 +76,7 @@ export class CreateAccessTokenParamsValidationError extends AppError {
 
   constructor(message: string) {
     super(message);
-    this.code = AccessTokenErrorCode.UNAUTHORIZED_ACCESS;
-    this.httpStatusCode = 401;
+    this.code = AccessTokenErrorCode.BAD_REQUEST;
+    this.httpStatusCode = 400;
   }
 }

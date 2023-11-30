@@ -38,7 +38,6 @@ export default class TaskReader {
     const totalTasksCount = await TaskRepository.taskDB
       .countDocuments({
         accountId: params.accountId,
-        active: true,
       });
     const paginationParams: PaginationParams = {
       page: (params.page) ? (params.page) : 1,
@@ -46,7 +45,7 @@ export default class TaskReader {
     };
     const startIndex = (paginationParams.page - 1) * (paginationParams.size);
     const tasks = await TaskRepository.taskDB
-      .find({ accountId: params.accountId, active: true })
+      .find({ accountId: params.accountId })
       .limit(paginationParams.size)
       .skip(startIndex);
     return tasks.map((task) => TaskUtil.convertTaskDBToTask(task));

@@ -20,7 +20,7 @@ describe('API /api/accounts', () => {
 
   describe('POST', () => {
     it('POST /account should create a new account', async () => {
-      const params = { username: faker.internet.userName(), password: 'password' };
+      const params = { username: faker.internet.userName(), password: 'password', email: faker.internet.email() };
       const res = await chai
         .request(app)
         .post('/api/accounts')
@@ -32,7 +32,7 @@ describe('API /api/accounts', () => {
     });
 
     it('POST /account should throw if account with username already exists', async () => {
-      const params = { username: faker.internet.userName(), password: 'password' };
+      const params = { username: faker.internet.userName(), password: 'password', email: faker.internet.email() };
       await AccountWriter.createAccount(params);
       const res = await chai
         .request(app)

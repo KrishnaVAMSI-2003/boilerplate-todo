@@ -61,7 +61,7 @@ describe('SMS Service', () => {
     const params = {
       recipientPhone: {
         countryCode: '+91',
-        phoneNumber: '7300159158',
+        phoneNumber: '73001',
       },
       messageBody: '',
     };
@@ -96,7 +96,7 @@ describe('SMS Service', () => {
     const params = {
       recipientPhone: {
         countryCode: '+91',
-        phoneNumber: '7300159158',
+        phoneNumber: '73001',
       },
       messageBody: 'simple message',
     };
